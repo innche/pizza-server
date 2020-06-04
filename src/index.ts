@@ -3,17 +3,40 @@ import express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
+import { Pizza } from "./entity/Pizza";
+import { OrderResolver } from "./resolvers/OrderResolver";
 import { PizzaResolver } from "./resolvers/PizzaResolver";
 
 (async () => {
   const app = express();
   app.get("/", (_req, res) => res.send("hello"));
 
-  await createConnection();
+  await createConnection()
+    .then(async (connection: any) => {
+      let pizzas = await connection.manager.find(Pizza);
+      if (pizzas.length === 0) {
+        console.log("Inserting pizzas into the database...");
+        for (let i = 1; i <= 8; i++) {
+          const pizza = new Pizza(),
+            rnd = Math.random();
+
+          pizza.name = `Pizza ${i}`;
+          pizza.price = {
+            priceEUR: Math.round(rnd * 15 + 15),
+            priceUSD: Math.round(rnd * 13 + 17)
+          };
+          pizza.imageUrl =
+            "https://www.dreamstime.com/%C3%B1%C2%81lassic-pepperoni-cheese-pizza-image101663989";
+          await connection.manager.save(pizza);
+        }
+        console.log("Saved pizzas");
+      }
+    })
+    .catch((error) => console.log(error));
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [PizzaResolver]
+      resolvers: [PizzaResolver, OrderResolver]
     })
   });
 

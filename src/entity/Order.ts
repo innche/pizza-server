@@ -30,6 +30,10 @@ export class Order extends BaseEntity {
   @Column(() => Price)
   totalPrice: Price;
 
+  @Field(() => Date)
+  @Column(() => Date)
+  timestamp: Date;
+
   @OneToMany(() => OrderLine, (orderLine) => orderLine.id)
   lines: OrderLine[];
 }
