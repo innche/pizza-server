@@ -3,9 +3,7 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn
 } from "typeorm";
 import { Order } from "./Order";
@@ -20,8 +18,7 @@ export class OrderLine extends BaseEntity {
   id: number;
 
   @Field()
-  @OneToOne(() => Pizza)
-  @JoinColumn()
+  @ManyToOne(() => Pizza, (pizza) => pizza.id)
   pizza: Pizza;
 
   @Field()

@@ -26,7 +26,7 @@ import { PizzaResolver } from "./resolvers/PizzaResolver";
             priceUSD: Math.round(rnd * 13 + 17)
           };
           pizza.imageUrl =
-            "https://www.dreamstime.com/%C3%B1%C2%81lassic-pepperoni-cheese-pizza-image101663989";
+            "https://images.all-free-download.com/images/graphicthumb/pizza_02_hd_pictures_167413.jpg";
           await connection.manager.save(pizza);
         }
         console.log("Saved pizzas");
