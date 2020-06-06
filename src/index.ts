@@ -1,17 +1,23 @@
 import { ApolloServer } from "apollo-server-express";
+import "dotenv/config";
 import express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
+import { dbOptions } from "./dbOptions";
 import { Pizza } from "./entity/Pizza";
 import { OrderResolver } from "./resolvers/OrderResolver";
 import { PizzaResolver } from "./resolvers/PizzaResolver";
+
+if (process.env.NODE_ENV === "dev") {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+}
 
 (async () => {
   const app = express();
   app.get("/", (_req, res) => res.send("hello"));
 
-  await createConnection()
+  await createConnection(dbOptions)
     .then(async (connection: any) => {
       let pizzas = await connection.manager.find(Pizza);
       if (pizzas.length === 0) {
@@ -42,7 +48,7 @@ import { PizzaResolver } from "./resolvers/PizzaResolver";
 
   apolloServer.applyMiddleware({ app });
 
-  app.listen(4000, () => {
+  app.listen(process.env.PORT || 4000, () => {
     console.log("Express server is started");
   });
 })();
