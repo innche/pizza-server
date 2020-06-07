@@ -5,6 +5,7 @@ import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { dbOptions } from "./dbOptions";
+import { DeliveryPrice } from "./entity/DeliveryPrice";
 import { Pizza } from "./entity/Pizza";
 import { OrderResolver } from "./resolvers/OrderResolver";
 import { PizzaResolver } from "./resolvers/PizzaResolver";
@@ -19,6 +20,18 @@ if (process.env.NODE_ENV === "dev") {
 
   await createConnection(dbOptions)
     .then(async (connection: any) => {
+      let deliveryPrice = await connection.manager.find(DeliveryPrice);
+      if (deliveryPrice.length === 0) {
+        console.log("Inserting delivery price into the database...");
+        deliveryPrice = new DeliveryPrice();
+        deliveryPrice.price = {
+          priceEUR: 5,
+          priceUSD: 6
+        };
+        await connection.manager.save(deliveryPrice);
+        console.log("Delivery price saved.");
+      }
+
       let pizzas = await connection.manager.find(Pizza);
       if (pizzas.length === 0) {
         console.log("Inserting pizzas into the database...");

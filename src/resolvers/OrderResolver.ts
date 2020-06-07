@@ -9,6 +9,7 @@ import {
   Query,
   Resolver
 } from "type-graphql";
+import { DeliveryPrice } from "../entity/DeliveryPrice";
 import { Order } from "../entity/Order";
 import { OrderLine } from "../entity/OrderLine";
 import { Pizza } from "../entity/Pizza";
@@ -30,13 +31,18 @@ class OrderInfo {
 
 @Resolver()
 export class OrderResolver {
+  @Query(() => DeliveryPrice)
+  deliveryPrice() {
+    return DeliveryPrice.findOne();
+  }
+
   @Query(() => Order)
-  getOrder(@Arg("id") id: number) {
+  order(@Arg("id") id: number) {
     return Order.findOne({ where: { id } });
   }
 
   @Query(() => [Order])
-  getOrders(@Arg("userId") userId: number) {
+  orders(@Arg("userId") userId: number) {
     return Order.find({ where: { user: userId } });
   }
 
