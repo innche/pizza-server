@@ -42,7 +42,8 @@ if (process.env.NODE_ENV === "dev") {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [PizzaResolver, OrderResolver]
+      resolvers: [PizzaResolver, OrderResolver],
+      nullableByDefault: true
     })
   });
 
