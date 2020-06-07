@@ -1,4 +1,5 @@
 import { ApolloServer } from "apollo-server-express";
+import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import "reflect-metadata";
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV === "dev") {
 
 (async () => {
   const app = express();
+  app.use(cors({ origin: process.env.ALLOWED_ORIGIN, credentials: true }));
   app.get("/", (_req, res) => res.send("hello"));
 
   await createConnection(dbOptions)
@@ -60,7 +62,7 @@ if (process.env.NODE_ENV === "dev") {
     })
   });
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app, cors: false });
 
   app.listen(process.env.PORT || 4000, () => {
     console.log("Express server is started");
