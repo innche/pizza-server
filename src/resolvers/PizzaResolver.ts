@@ -1,5 +1,10 @@
-import { Arg, Query, Resolver } from "type-graphql";
+import { Arg, Args, ArgsType, Field, Int, Query, Resolver } from "type-graphql";
 import { Pizza } from "../entity/Pizza";
+
+@ArgsType()
+class PizzaIds {
+  @Field(() => [Int]) ids: [number];
+}
 
 @Resolver()
 export class PizzaResolver {
@@ -9,7 +14,14 @@ export class PizzaResolver {
   }
 
   @Query(() => [Pizza])
-  pizzas() {
+  async pizzas(@Args() { ids }: PizzaIds) {
+    if (ids) {
+      const result = [];
+      for (let id of ids) {
+        result.push(await Pizza.findOne({ where: { id } }));
+      }
+      return result;
+    }
     return Pizza.find();
   }
 }
