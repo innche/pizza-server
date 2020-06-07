@@ -11,10 +11,6 @@ import { Pizza } from "./entity/Pizza";
 import { OrderResolver } from "./resolvers/OrderResolver";
 import { PizzaResolver } from "./resolvers/PizzaResolver";
 
-if (process.env.NODE_ENV === "dev") {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-}
-
 (async () => {
   const app = express();
   app.use(cors({ origin: process.env.ALLOWED_ORIGIN, credentials: true }));

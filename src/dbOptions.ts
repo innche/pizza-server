@@ -23,5 +23,8 @@ export const dbOptions: PostgresConnectionOptions = {
   },
   extra: {
     ssl: true
+  },
+  ssl: {
+    rejectUnauthorized: false
   }
 };
