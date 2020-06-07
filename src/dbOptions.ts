@@ -21,9 +21,6 @@ export const dbOptions: PostgresConnectionOptions = {
     migrationsDir: "src/migration",
     subscribersDir: "src/subscriber"
   },
-  extra: {
-    ssl: true
-  },
   ssl: {
     rejectUnauthorized: false
   }
