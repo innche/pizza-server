@@ -9,4 +9,4 @@ Steps to run this project:
 DATABASE_URL=postgres://path-to-postgresdb
 ALLOWED_ORIGIN=http://localhost:3000
 ```
-3. Run `yarn start` command
+4. Run `yarn start` command. The app will run at http://localhost:4000/
